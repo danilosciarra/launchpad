@@ -87,7 +87,7 @@ func expandEnv(raw []byte) ([]byte, error) {
 // (which are always strings) to land in typed struct fields such as int,
 // bool or time.Duration.
 func fillStructFromMap(from map[string]interface{}, rv reflect.Value) {
-	if rv.Kind() == reflect.Ptr {
+	if rv.Kind() == reflect.Pointer {
 		if rv.IsNil() {
 			return
 		}
@@ -109,7 +109,7 @@ func fillStructFromMap(from map[string]interface{}, rv reflect.Value) {
 		// configuration type) are filled from the same map level.
 		if field.Anonymous {
 			fv := fieldVal
-			if fv.Kind() == reflect.Ptr {
+			if fv.Kind() == reflect.Pointer {
 				if fv.IsNil() {
 					fv.Set(reflect.New(fv.Type().Elem()))
 				}
@@ -132,7 +132,7 @@ func fillStructFromMap(from map[string]interface{}, rv reflect.Value) {
 		}
 
 		fv := fieldVal
-		if fv.Kind() == reflect.Ptr {
+		if fv.Kind() == reflect.Pointer {
 			if fv.IsNil() {
 				fv.Set(reflect.New(fv.Type().Elem()))
 			}

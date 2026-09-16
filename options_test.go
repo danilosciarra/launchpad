@@ -188,7 +188,7 @@ func TestWithUnaryInterceptor_IsInvoked(t *testing.T) {
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	)
 	require.NoError(t, err)
-	defer conn.Close()
+	defer func() { _ = conn.Close() }()
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -227,7 +227,7 @@ func TestShutdown_StopsStartedServers(t *testing.T) {
 	for range 50 {
 		resp, err = http.Get(url) //nolint:gosec // test-local URL
 		if err == nil {
-			resp.Body.Close()
+			_ = resp.Body.Close()
 			break
 		}
 		time.Sleep(20 * time.Millisecond)
