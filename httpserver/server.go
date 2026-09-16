@@ -11,8 +11,8 @@ import (
 	"net/http"
 
 	"github.com/danilosciarra/launchpad/config"
-	internallogging "github.com/danilosciarra/launchpad/internal/logging"
 	"github.com/danilosciarra/launchpad/internal/httpmiddleware"
+	internallogging "github.com/danilosciarra/launchpad/internal/logging"
 	"github.com/danilosciarra/launchpad/log"
 
 	"github.com/gin-gonic/gin"

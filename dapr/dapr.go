@@ -23,7 +23,12 @@ type Client struct {
 }
 
 // New connects to the Dapr sidecar at addr. It sets the DAPR_GRPC_ENDPOINT
-// environment variable expected by the Dapr Go SDK before dialing.
+// environment variable expected by the Dapr Go SDK before dialing, and
+// returns an error if the sidecar cannot be reached.
+//
+// The Dapr Go SDK caches its client process-wide: once a connection has been
+// established, later calls reuse it and ignore addr. This only matters to
+// applications that build more than one Launchpad App in the same process.
 func New(addr config.Address) (*Client, error) {
 	endpoint := fmt.Sprintf("%s:%d", addr.Host, addr.Port)
 	if err := os.Setenv("DAPR_GRPC_ENDPOINT", endpoint); err != nil {

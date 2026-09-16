@@ -120,7 +120,8 @@ if err := config.Load(&cfg); err != nil { // ./config.json next to the binary
 and fields tagged `validate:"..."` (see
 [go-playground/validator](https://github.com/go-playground/validator)) are
 checked automatically after loading, so a missing required field fails fast
-with a descriptive error.
+with a descriptive error. Referencing a variable that is **not set** is an
+error too, rather than silently expanding to a placeholder.
 
 ```json
 {

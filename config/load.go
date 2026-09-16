@@ -59,6 +59,9 @@ func LoadFile(path string, cfg any) error {
 
 // expandEnv treats raw as a Go template and executes it against the current
 // process environment, so config.json can reference `{{.MY_ENV_VAR}}`.
+// Referencing a variable that is not set is an error: silently expanding it
+// would produce a subtly misconfigured application instead of a clear
+// startup failure.
 func expandEnv(raw []byte) ([]byte, error) {
 	env := make(map[string]string)
 	for _, kv := range os.Environ() {
@@ -67,7 +70,7 @@ func expandEnv(raw []byte) ([]byte, error) {
 		}
 	}
 
-	tmpl, err := goTemplate.New("config").Parse(string(raw))
+	tmpl, err := goTemplate.New("config").Option("missingkey=error").Parse(string(raw))
 	if err != nil {
 		return nil, err
 	}
